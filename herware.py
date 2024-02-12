@@ -53,6 +53,7 @@ class AdvancedHerware(EnhancedHerware):
 
     def start_process(self, process_name):
         """Start a process on the hardware device with timeout settings."""
-        if self.status == "Processing" and time.time() < self.settings["process_timeout"]:
+        if self.status == "Processing" and time.time(
+        ) < self.settings["process_timeout"]:
             return "Processing in progress, please wait"
         return super().start_process(process_name)
