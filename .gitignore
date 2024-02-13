@@ -1,2 +1,4 @@
-log files
-*.log
+__pycache__
+file.json
+.swp
+.swo
