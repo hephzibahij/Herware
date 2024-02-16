@@ -20,7 +20,7 @@ the repository will include clone {git clone https://token@github.com/username/H
 The Author include the contributors in the project
 
 Ijeje Hephzibah Ada // hephzibahijeje89@gmail.com //htttps://x.com/hephzibah_ijeje?s=21&t=l5npuDIxcZDct34JMAGFoA // https://www.facebook.com/hephzibah.ijeje 
-Barkare Tolulope Mary
+Bakare Tolulope Mary //marybakare@gmail.com
 
 TECHNOLOGIES 
      -      PROGRAMMING LANGUAGE AND FRAMEWORK: 
