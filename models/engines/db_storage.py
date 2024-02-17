@@ -1,72 +1,60 @@
-import os
+# db_storage.py
 import json
-from typing import Union
-from datetime import datetime, timedelta
-from .base_model import BaseModel
-from .data import Data
-from .user import User
-from .device import Device
 
 
 class DBStorage:
-    """
-    Database Storage Class for the Herware project
-    """
-    @staticmethod
-def save_user_data(user: User, data: Union[dict, BaseModel]):
-    """
-    Save user and device data to the database
-    :param user: User model instance
-    :param data: Data model instance or dictionary of data
-    """
+    def __init__(self, db_file):
+        self.db_file = db_file
+        self._load_db_from_file()
+
+    def _load_db_from_file(self):
+        if json.exists(self.db_file):
+            with open(self.db_file, 'r') as file:
+                self.database = json.load(file)
+        else:
+            self.database = {}
+
+    def save_to_db(self):
+        with open(self.db_file, 'w') as file:
+            json.dump(self.database, file, indent=4)
+
+    def get_from_db(self, key):
+        return self.database.get(key)
+
+    def set_in_db(self, key, value):
+        self.database[key] = value
+        self.save_to_db()
 
 
-# Convert data to Data model instance if it's a dictionary
-if isinstance(data, dict):
-    data = Data(data=json.dumps(data), user=user)
-    data.save()
+class Bookmark:
+    def __init__(self, user_id, title, url):
+        self.user_id = user_id
+        self.title = title
+        self.url = url
 
 
-@staticmethod
-def fetch_user_data(
-        user: User, days: Union[int, timedelta] = 7) -> Union[Data, dict]:
-    """
-    Fetch user and device data from the database
-    :param user: User model instance
-    :param days: Number of days or a timedelta instance data to fetch
-    :return: Data model instance or dictionary of data
-    """
+class User:
+    def __init__(self, user_id, name, email):
+        self.user_id = user_id
+        self.name = name
+        self.email = email
+        self.bookmarks = []
 
 
-# Fetch data within the specified time range
-data = Data.objects.filter(user=user, created_at__gte=(datetime.now() - days))
-
-# Convert the fetched data to a dictionary
-fetched_data = []
-for datum in data:
-    fetched_data.append(json.loads(datum.data))
-    return fetched_data if len(fetched_data) > 1 else fetched_data[0]
-
-
-@staticmethod
-def delete_user_data(user: User, days: Union[int, timedelta] = 7):
-    """
-    Delete user and device data from the database
-    :param user: User model instance
-    :param days: Number of days or a timedelta instance of data to delete
-    """
+def create_user_in_db(db, user):
+    db['users'][str(user.user_id)] = {
+        'name': user.name,
+        'email': user.email,
+        'bookmarks': user.bookmarks
+    }
+    db.save_to_db()
 
 
-Data.objects.filter(user=user, created_at__lt=(datetime.now() - days)).delete()
-
-
-@staticmethod
-def delete_all_user_data(user: User):
-    """
-    Delete all user and device data from the database
-    :param user: User model instance
-    """
-
-
-Data.objects.filter(user=user).delete()
-Device.objects.filter(user=user).delete()
+def create_bookmark_in_db(db, bookmark):
+    user_id = str(bookmark.user_id)
+    if user_id in db['users']:
+        db['users'][user_id]['bookmarks'].append({
+            'title': bookmark.title,
+            'url': bookmark.url
+        })
+        db.save_to_db()
