@@ -30,7 +30,7 @@
 /* 1. Defaults & Reset of specific styles across browsers */
 /*------------------------------------------------------------------------------------------*/
 
-*, *:before, *:after {
+, *:before, *:after {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -2326,7 +2326,3 @@ blockquote {
     }
 
 }
-
-
-
-
