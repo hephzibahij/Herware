@@ -1,10 +1,7 @@
 from flask import Flask, request
 
-app = Flask(__name__)
+app = Flask(_name_)
 
-@app.route('/')
-def index():
-    return "Welcome to the Herware API"
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -13,9 +10,16 @@ def submit_form():
     gender = request.form.get('gender')
     organization = request.form.get('organization')
     date of birth = request.form.get('date of birth')
-    why do you want to volunteer = request.form.get('why do you want to volunteer')
+    why do you want to volunteer = request.form.get('why
+                                                    do you want to volunteer')
     # Process the data (e.g., save to a database)
-    return f'Form submitted successfully with name: {name} and email: {email}'
+    return 'Form submitted successfully'
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+@app.route('/')
+def index():
+    return "Welcome to the Girlchild API"
+
+
+if _name_ == '_main_':
+    app.run()
